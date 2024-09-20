@@ -1,0 +1,5 @@
+theme = 'ananke'
+baseURL = 'https://example.org/'
+languageCode = 'zh-cn'
+title = 'Shawn Niu | Software Engineer'
+copyright = "Shawn Niu"
