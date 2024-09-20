@@ -7,7 +7,7 @@ tags:
    - program language
 ---
 
-在使用`python`编写程序时，尤其是命令行程序，很多时候需要执行一些耗时较长的任务，比如爬虫任务、机器学习领域对大数据集做遍历处理等场景。**进度条（Progress Bar）** 可以展示当前任务是否已经完成、完成的百分比，甚至能够告诉你还需要等待多久。`python`内置提供了 [tqdm](https://github.com/tqdm/tqdm) 模块，通过简单几行代码就可以完成进度条的打印。
+在使用`python`编写程序时，尤其是命令行程序，很多时候需要执行一些耗时较长的任务，比如爬虫任务、机器学习领域对大数据集做遍历处理等场景。**进度条（Progress Bar）** 可以展示当前任务是否已经完成、完成的百分比，甚至能够告诉你还需要等待多久。`python`提供了 [tqdm](https://github.com/tqdm/tqdm) 模块，通过简单几行代码就可以完成进度条的打印。
 
 官方提供了一个最简单的示例：
 
@@ -23,7 +23,7 @@ tags:
 
 #### 描述进度条
 
-你可以通过实例化tqdm时指定`desc`属性来为进度条提供一个简介的描述性信息。
+你可以通过实例化tqdm时指定`desc`属性来为进度条提供一个简洁的描述性信息。
 
 > `tqdm.tqdm(total=100, desc='Users')`
 
@@ -50,7 +50,7 @@ Users:  38%|████████████▉                     | 38/100
 
 通过在实例化tqdm时指定`desc`属性，可以在进度条前方展示描述信息，如果需要在执行过程中动态调整这个内容，可以通过调用tqdm的`set_description`函数实现。
 
-> `pbar = tqdm.tqdm(total=100, desc='Users Na/Na')`  
+> `pbar = tqdm.tqdm(total=100, desc=f'Users 0/{total}')`  
 > `pbar.set_description(f'Users {current_idx}/{total}')`
 
 完整的示例代码如下：
@@ -60,7 +60,7 @@ import tqdm
 import time
 
 total = 100
-pbar = tqdm.tqdm(total=total, desc='Users Na/Na')
+pbar = tqdm.tqdm(total=total, desc=f'Users 0/{total}')
 for i in range(total):
     time.sleep(0.01)
     pbar.set_description(f'Users {i+1}/{total}')
@@ -131,12 +131,9 @@ pbar.close()
 代码输出效果为：
 
 ```
->>> OUTPUT <<<
-...
 User 98
 User 99
 Users: 100%|█████████████████████████████████| 100/100 [00:01<00:00, 92.27it/s]
->>> OUTPUT <<<
 ```
 
 #### 为进度条增加状态栏
