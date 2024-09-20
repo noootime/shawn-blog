@@ -1,7 +1,6 @@
 ---
 title: Python Progress Bar
 date: 2024-09-20T17:28:51+08:00
-draft: true
 tags:
    - tqdm
    - python 
