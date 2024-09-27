@@ -6,7 +6,6 @@ tags:
     - python
     - pandas
 slug: pandas-dataframe-basic-usage
-draft: true
 ---
 
 重命名列名
