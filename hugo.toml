@@ -1,6 +1,11 @@
 theme = 'ananke'
-baseURL = 'https://example.org/'
+baseURL = 'https://noootime.github.io/'
 languageCode = 'zh-cn'
 title = 'Shawn Niu | Software Engineer'
 copyright = "Shawn Niu"
 googleAnalytics = "G-ZT7NYJQXSB"
+
+
+[permalinks]
+    posts = "/posts/:year/:month/:day/:slug/"
+    tags = "/tags/:title/"
