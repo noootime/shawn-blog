@@ -5,6 +5,7 @@ tags:
    - tqdm
    - python 
    - program language
+slug: python-progress-bar
 ---
 
 在使用`python`编写程序时，尤其是命令行程序，很多时候需要执行一些耗时较长的任务，比如爬虫任务、机器学习领域对大数据集做遍历处理等场景。**进度条（Progress Bar）** 可以展示当前任务是否已经完成、完成的百分比，甚至能够告诉你还需要等待多久。`python`提供了 [tqdm](https://github.com/tqdm/tqdm) 模块，通过简单几行代码就可以完成进度条的打印。

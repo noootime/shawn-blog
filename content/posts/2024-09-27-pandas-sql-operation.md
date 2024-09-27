@@ -1,6 +1,5 @@
 ---
 title: Pandas Sql Operation
-description: 通过Pandas执行SQL并将结果存储到DataFrame中
 date: 2024-09-27T10:31:28+08:00
 tags: 
     - blogumentation
