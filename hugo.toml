@@ -1,4 +1,4 @@
-theme = 'smol'
+theme = 'ananke'
 baseURL = 'https://noootime.github.io/'
 languageCode = 'zh-cn'
 title = 'Shawn Niu | Software Engineer'

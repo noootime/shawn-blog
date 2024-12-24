@@ -1,5 +1,5 @@
 ---
-title : A Hitchhiker's Guide to Caching Patterns
+title : "[译] A Hitchhiker's Guide to Caching Patterns"
 date : 2024-10-11T09:50:06+08:00
 tags:
     - 翻译
@@ -14,30 +14,25 @@ slug: caching-patterns-guide
 
 决定使用缓存仅仅是这个旅程中的开始，下一步你需要思考，你的应用程序该如何与缓存进行交互。
 
-<!--more-->
-
 ## Cache-Aside
 
 Cache-Aside应该是最常用的缓存模式了，中文一般称为“旁路缓存”。在这种模式下，你的代码来负责缓存数据与原始数据的交互流程。
 
 当**读取请求**发生时，它的流程如下所示：
 
-```mermaid
+{{<mermaid>}}
 sequenceDiagram
     actor User
     participant Code
     participant Cache
     participant Datastore
-    
     User->>Code: get value
     activate User
     activate Code
-
     Code->>Cache: get value
     activate Cache
     Cache-->>Code: return value or null
     deactivate Cache
-
     alt value is null:
         Code->>Datastore: get value
         activate Datastore
@@ -48,15 +43,14 @@ sequenceDiagram
         activate Cache
         deactivate Cache
     end
-
     Code-->>User: return value
     deactivate Code
     deactivate User
-```
+{{</mermaid>}}
 
 当**写请求**发生时，流程会相对简单：
 
-```mermaid
+{{<mermaid>}}
 sequenceDiagram
     actor User
     participant Code
@@ -76,7 +70,7 @@ sequenceDiagram
     deactivate Datastore
     deactivate Code
     deactivate User
-```
+{{</mermaid>}}
 
 Cache-Aside的最大优点是代码流程简介易懂，便于维护。此外，对于Cache Provider的需求很简单：它只需要能提供`set value`和`get value`的途径即可，这一特点让你在替换Cache Provider时非常方便。
 
@@ -88,7 +82,7 @@ Cache-Aside的最大优点是代码流程简介易懂，便于维护。此外，
 
 Read-Through中文称为“读穿透”，在查询数据时，如果缓存中不存在数据，则先从数据源中获取并放入缓存，然后返回给应用程序。相比Cache-Aside来说，Read-Through将从Datastore获取数据的职责，从Code层转移到了Cache层。
 
-```mermaid
+{{<mermaid>}}
 sequenceDiagram
     actor User
     participant Code
@@ -122,7 +116,7 @@ sequenceDiagram
     Code-->>User: return value
     deactivate Code
     deactivate User
-```
+{{</mermaid>}}
 
 Read-Through实现了关注点分离原则（Separation of Concerns principle）。现在，代码层只需要与Cache进行交互。Cache与Datastore之间的数据同步，由Cache自身控制。相对于Cache-Aside模式，Read-Through对Cache Provider提出了更高的要求。
 
@@ -132,7 +126,7 @@ Read-Through实现了关注点分离原则（Separation of Concerns principle）
 
 Write-Through中文称为“写穿透”，在数据更新时同时更新缓存，确保数据一致性。类似Read-Through，但是针对的是写场景的解决方案。它将写数据的职责转移给了Cache Provider。
 
-```mermaid
+{{<mermaid>}}
 sequenceDiagram
     actor User
     participant Code
@@ -153,7 +147,7 @@ sequenceDiagram
     deactivate Cache
     deactivate Code
     deactivate User
-```
+{{</mermaid>}}
 
 Write-Through的主要优势是你无需在代码中进行错误处理和重试逻辑了，因为它现在由Cache完成。
 
@@ -163,7 +157,7 @@ Write-Through的主要优势是你无需在代码中进行错误处理和重试�
 
 Write-Behind中文称为“写后缓存”，延迟将数据写入缓存，以提高写入性能。它看起来非常像Write-Through。
 
-```mermaid
+{{<mermaid>}}
 sequenceDiagram
     actor User
     participant Code
@@ -184,7 +178,7 @@ sequenceDiagram
     deactivate Cache
     deactivate Code
     deactivate User
-```
+{{</mermaid>}}
 
 大部人可能看不出来这个流程与Write-Through之间的差异，仔细观察可以发现，最后一个流程的箭头发生了变化：从实心箭头变成了空心箭头。在UML建模中，它表示Cache发送了一个异步消息到Datastore中。
 
@@ -202,7 +196,7 @@ Refresh-Ahead中文称为“预取刷新”，在数据即将过期时，异步�
 
 Refresh-Ahead的实现依赖Cache Provider。（译注：原文的意思是直接无脑选择Hazelcast Jet就行了，安全有保障）。使用Hazelcast Jet的Change-Data-Capture能力，Jet允许使用public API连接到任意的Cache Provider中，并且能够做到，Datastore发生变化，就会同步数据到Cache中。下面是CDC的简要时序图：
 
-```mermaid
+{{<mermaid>}}
 sequenceDiagram
     participant Jet
     participant Datastore
@@ -238,7 +232,7 @@ sequenceDiagram
     Code-->>User: return value
     deactivate Code
     deactivate User
-```
+{{</mermaid>}}
 
 ## Summary
 
