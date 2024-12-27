@@ -18,7 +18,8 @@ std::string s = "frayed knot";
 
 字符串`s`在内存中可以表示为：
 
-![alt](/rust-note/ownership-and-moves/pics/string_mem_0401.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/string_mem_0401.png) -->
+![alt](../pics/string_mem_0401.png)
 > C++ std::string value on the stack, pointing to its heap-allocated buffer
 
 其中，`std::string`对象总是确定地占用3个字长（3 words long），包含以下部分：
@@ -52,7 +53,8 @@ fn print_padovan() {
 
 变量`padovan`的类型是`Vec<i32>`，它是一个32-bit整型的向量集合。最终，`padovan`在内存中看起来是这样的：
 
-![alt](/rust-note/ownership-and-moves/pics/rust_vec_mem_0402.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/rust_vec_mem_0402.png) -->
+![alt](../pics/rust_vec_mem_0402.png)
 
 这与我们在上面看到C++中的`std::string`非常类似，唯一区别就是buffer中的元素不再是字符，而是32-bit的整数了。需要注意的是，用于存储`padovan`的`pointer`、`capacity`、`length`的这些存储单元，是直接存放在`print_padovan`函数的栈帧中的，只有向量的缓冲区是分配在堆内存里的。
 
@@ -72,7 +74,8 @@ Rust的`Box`类型服务于ownership的另外一个示例。`Box<T>`是一个指
 
 当程序调用`Box::new`时，它会在堆内存上为持有两个f64数据的元组分配内存空间，然后将参数`(0.625, 0.5)`移动到这片区域，最后返回一个指向该区域的指针。当上述代码执行到`assert_eq!`时，内存表现形式如下：
 
-![alt](/rust-note/ownership-and-moves/pics/rust_tuple_mem_0403.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/rust_tuple_mem_0403.png) -->
+![alt](../pics/rust_tuple_mem_0403.png)
 
 变量`point`和`label`直接被栈帧持有，它们各自指向一片内存区域。当它们被丢弃时，被分配的空间会随之释放。
 
@@ -96,7 +99,8 @@ for composer in &composers {
 
 `composers`是一个`Vec<Person>`，一个结构体的向量，每一个都持有一个字符串和一个数字。`composers`在内存中的最终形态如下：
 
-![alt](/rust-note/ownership-and-moves/pics/structs_vector_mem_0404.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/structs_vector_mem_0404.png) -->
+![alt](../pics/structs_vector_mem_0404.png)
 
 这里存在许多ownership的关系，但每一种关系都相当简单明了：`composers`拥有一个vector，vector则拥有它自己的`Person`结构体，每个结构体又拥有它们自己的成员字段，而字符串字段则拥有其文本内容。当控制流离开`composers`的作用域时，程序会丢弃它的值，并连带处理与之相关的整个资源安排情况。如果在这种场景中涉及其他类型的集合 —— 比如哈希表（HashMap）或者二叉搜索树集合（BTreeSet），情况也会是一样的。
 

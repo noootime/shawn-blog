@@ -24,13 +24,15 @@ u = s
 
 在Python中，每个对象都携带一个引用计数（reference count），用来跟踪记录值被指针引用的次数。因此，当变量`s`被赋值后，程序的状态看起来是这样的：
 
-![alt](/rust-note/ownership-and-moves/pics/python_list_mem_0405.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/python_list_mem_0405.png) -->
+![alt](../pics/python_list_mem_0405.png)
 
 因为只有`s`指向这个数组，所以这个数组的引用计数为1；又因为只有数组指向了这些字符串，因此每一个字符串的引用计数也分别是1。
 
 当程序中剩余的两个赋值语句执行完成后，会发生什么呢？Python通过让目标指向与源相同的对象，并增加该对象的引用计数这种方式来实现赋值操作：
 
-![alt](/rust-note/ownership-and-moves/pics/python_list_mem2_0406.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/python_list_mem2_0406.png) -->
+![alt](../pics/python_list_mem2_0406.png)
 
 Python将指针从`s`复制到了`t`和`u`中，并将列表的引用计数更新为3。Python中的赋值操作成本很低，但由于它为对象创建了一个新的引用，所以我们必须维护引用计数，以便知晓何时可以释放该值。
 
@@ -45,11 +47,13 @@ vector<string> u = s;
 
 `s`的最初内存分布情况如下图所示：
 
-![alt](/rust-note/ownership-and-moves/pics/cpp_vector_mem_0407.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/cpp_vector_mem_0407.png) -->
+![alt](../pics/cpp_vector_mem_0407.png)
 
 当赋值语句执行完成，会发生什么呢？在C++中，对于`std::vector`的赋值操作会产生一个复制；`std::string`也有相似行为。因此，在完成赋值语句后，在内存中会分配3个向量以及9个字符串：
 
-![alt](/rust-note/ownership-and-moves/pics/cpp_vector_mem2_0408.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/cpp_vector_mem2_0408.png) -->
+![alt](../pics/cpp_vector_mem2_0408.png)
 
 根据所涉及的值的情况，在C++中进行赋值操作可能会消耗无限制的内存量和处理器时间。不过，其优势在于，程序很容易确定何时释放所有这些内存：当变量离开其作用域时，在此处分配的所有内存都会被自动情况。
 
@@ -65,11 +69,13 @@ let u = s;
 
 与C和C++一样，Rust会将诸如"udon"这样的普通字符串字面量存放在只读内存中，所以，为了能更清晰地与C++及Python的示例进行对比，我们在这里调用`to_string`函数来获取在堆上分配的`String`类型的值。当完成`s`的初始化后，Rust的内存分布情况看起来和C++差不多：
 
-![alt](/rust-note/ownership-and-moves/pics/rust_vector_mem_0409.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/rust_vector_mem_0409.png) -->
+![alt](../pics/rust_vector_mem_0409.png)
 
 但要记得，在Rust中，对大多数类型进行赋值操作时，会将值从源处移动到目标处，使得源处变为未初始化状态。那么，在`t`初始化后，会变成这样子：
 
-![alt](/rust-note/ownership-and-moves/pics/rust_vector_mem2_0410.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/rust_vector_mem2_0410.png) -->
+![alt](../pics/rust_vector_mem2_0410.png)
 
 初始化语句`let t = s;`将向量的三个头字段从`s`移动到了`t`处；现在`t`拥有了这个向量。向量的元素仍然留在原来的位置，字符串也没有发生任何变化。每个值仍然只有一个所有者，尽管所有者已经易主了。这里不需要调整引用计数。而且编译器现在认为`s`处于未初始化状态。
 
@@ -299,7 +305,8 @@ let num2 = num1;
 
 代码执行后，内存表现如下：
 
-![alt](/rust-note/ownership-and-moves/pics/str_vs_i32_mem_0411.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/str_vs_i32_mem_0411.png) -->
+![alt](../pics/str_vs_i32_mem_0411.png)
 
 和前面的向量情况一样，赋值操作会将`string1`移动到`string2`，这样我们就不会出现两个`string`变量都负责释放同一个缓冲区的情况。然而，`num1`和`num2`的情况则有所不同。一个`i32`类型的值仅仅是内存中的一组比特位模式；它不拥有任何堆资源，并且除了它自身包含的字节之外，实际上并不依赖其它任何东西。当我们把它的比特位移动到`num2`时，就已经制作出了一个`num1`完全独立的副本。
 
@@ -392,7 +399,8 @@ let u: Rc<String> = s.clone();
 
 对于任意类型`T`，一个`Rc<T>`值是指向堆上分配的`T`的指针，并且这个`T`上附加了一个引用计数。克隆一个`Rc<T>`值并不会复制`T`；相反，它只是简单地创建出另一个指向`T`的指针，并增加引用计数。上述代码的内存表示形式为：
 
-![alt](/rust-note/ownership-and-moves/pics/rc_mem_0412.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/rc_mem_0412.png) -->
+![alt](../pics/rc_mem_0412.png)
 
 这三个`Rc<String>`指针都引用了同一片内存区域，这个内存保存着一个引用计数和`String`类型的成员。通常的所有权规则适用于这些`Rc`指针自身，并且当最后一个现存的`Rc`指针被销毁时，Rust也会销毁对应的`String`字符串。
 
@@ -424,7 +432,8 @@ Rust的内存和线程安全保障依赖于确保任何值都不会同时处于�
 
 使用引用计数来管理内存的一个众所周知的问题是，如果存在两个引用计数类型的值互相指向对方，那么每个值都会使对方的引用计数保持在大于零的状态，这样一来，这些值就永远不会被释放了。
 
-![alt](/rust-note/ownership-and-moves/pics/reference_count_loop_0413.png)
+<!-- ![alt](/rust-note/ownership-and-moves/pics/reference_count_loop_0413.png) -->
+![alt](../pics/reference_count_loop_0413.png)
 
 在Rust中，确实有可能以这种方式造成值无法被释放（内存泄露），但这种情况很罕见。如果不通过某种方式让一个旧值指向一个新值，是无法创建出循环引用的。显然，这需要旧值是可变的。由于`Rc`指针所指向的对象是不可变的，通常情况下就不可能创建出循环引用。不过，Rust确实提供了一些方法来为原本不可变的值创建可变部分，这被称为内部可变性（**interior mutability**），将来会专门讲解。如果你将这些计数与`Rc`指针结合起来使用，就有可能创建出循环引用并导致内存泄露。
 
