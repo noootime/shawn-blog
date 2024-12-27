@@ -5,7 +5,11 @@ title = 'Shawn Niu | Software Engineer'
 copyright = "Shawn Niu"
 googleAnalytics = "G-ZT7NYJQXSB"
 
+SectionPagesMenu = "main"
 
 [permalinks]
     posts = "/posts/:year/:month/:day/:slug/"
     tags = "/tags/:title/"
+
+[params]
+    show_reading_time = true
