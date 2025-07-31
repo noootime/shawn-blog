@@ -4,7 +4,6 @@ date: 2025-07-31T19:00:00+08:00
 type: posts
 tags:
   - english
-slug: english-learning-log-week1
 ---
 
 ## About the Materials We Used
