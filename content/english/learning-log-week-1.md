@@ -1,14 +1,13 @@
 ---
-title: "2025 07 31 English Learning Log - Week 1"
-date: 2025-07-31T19:00:00+08:00
-type: posts
+title: "Learning Log Week 1"
+date : 2025-08-01T08:47:38+08:00
 tags:
   - english
 ---
 
-## About the Materials We Used
+## The Materials We Used
 
-Julee sent me an article from Engoo Daily News. So I could read it and talk about it with her.
+Julee sent me an article from [Engoo Daily News](https://engoo.com/app/daily-news/article/new-luxury-7-day-train-trip-from-paris-to-istanbul/PBJR9mJWEfCULj8WkNRU8w). So I could read it and talk about it with her.
 
 I spent a lot of time to read it and learned some new words. I found that reading short articles is helpful for me. Especially the AI audio from the Engoo platform, I listened it for almost the whold day. And now I get a lot of useful knowledge from the article.
 
